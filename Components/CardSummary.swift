@@ -101,7 +101,7 @@ struct CardSummary: View {
                         VStack {
                             // Include the current day as 1
                             let days = daysBetween(from: trip.startDate, to: trip.finalDate)
-                            Text("\(days) \(days > 1 ? "days" : "day")")
+                            Text("\(days) \(days == 1 ? "day" : "days")")
                                 .font(.system(size: 15))
                                 .foregroundStyle(.gray)
                         } // -> VStack
