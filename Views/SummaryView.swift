@@ -25,17 +25,19 @@ struct SummaryView: View {
     var filteredTrips: [TripCostModel] {
         let calendar = Calendar.current
         let today = calendar.startOfDay(for: Date())
+        let filtered: [TripCostModel]
         if isUpcoming == "UPCOMING" {
-            return trips.filter {
+            filtered = trips.filter {
                 let tripEnd = calendar.startOfDay(for: $0.finalDate)
                 return tripEnd >= today
-            }
+            } // -> filtered
         } else {
-            return trips.filter {
+            filtered = trips.filter {
                 let tripEnd = calendar.startOfDay(for: $0.finalDate)
                 return tripEnd < today
-            }
-        }
+            } // -> filtered
+        } // -> if-else
+        return filtered.sorted { calendar.startOfDay(for: $0.startDate) < calendar.startOfDay(for: $1.startDate) }
     } // -> filteredTrips
     
     var body: some View {

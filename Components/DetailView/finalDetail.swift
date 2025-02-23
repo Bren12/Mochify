@@ -23,12 +23,16 @@ struct finalDetail: View {
                     Text("")
                         .font(.system(size: 13))
                     Text("Flight")
+                        .foregroundStyle(.black)
                         .font(.system(size: 13))
                     Text("Hotel")
+                        .foregroundStyle(.black)
                         .font(.system(size: 13))
                     Text("Transport")
+                        .foregroundStyle(.black)
                         .font(.system(size: 13))
                     Text("Meal")
+                        .foregroundStyle(.black)
                         .font(.system(size: 13))
                 } // -> VStack
                 .layoutPriority(1)
@@ -39,6 +43,7 @@ struct finalDetail: View {
                 VStack {
                     
                     Text("Individual")
+                        .foregroundStyle(.black)
                         .font(.system(size: 13))
                     
                     Text(String(
@@ -80,6 +85,7 @@ struct finalDetail: View {
                     VStack {
                         
                         Text("Group")
+                            .foregroundStyle(.black)
                             .font(.system(size: 13))
                         
                         Text(String(
@@ -126,9 +132,16 @@ struct finalDetail: View {
             if trip.isRoundTrip {
                 HStack {
                     
-                    Text(trip.originCode)
-                        .font(.system(size: 20, weight: .heavy))
-                        .frame(width: 45, alignment: .leading)
+                    VStack {
+                        Text(trip.originCode)
+                            .foregroundStyle(.black)
+                            .font(.system(size: 20, weight: .heavy))
+                            .frame(width: 50)
+                        Text(getCity(code: trip.originCode))
+                            .foregroundStyle(.black)
+                            .font(.system(size: 10))
+                            .frame(width: 50, alignment: .center)
+                    } // -> VStack
                     
                     Spacer()
                     
@@ -139,11 +152,19 @@ struct finalDetail: View {
                     
                     Spacer()
                     
-                    Text(trip.destinyCode)
-                        .font(.system(size: 20, weight: .heavy))
-                        .frame(width: 45, alignment: .trailing)
+                    VStack {
+                        Text(trip.destinyCode)
+                            .foregroundStyle(.black)
+                            .font(.system(size: 20, weight: .heavy))
+                            .frame(width: 50)
+                        Text(getCity(code: trip.destinyCode))
+                            .foregroundStyle(.black)
+                            .font(.system(size: 10))
+                            .frame(width: 50, alignment: .center)
+                    } // -> VStack
                     
                 } // -> HStack
+                .frame(height: 55)
                 
                 Line()
                     .stroke(Color("defaultLightGray"), style: StrokeStyle(lineWidth: 1, dash: [10]))
@@ -155,6 +176,7 @@ struct finalDetail: View {
             HStack {
                 
                 Text("TOTAL")
+                    .foregroundStyle(.black)
                     .font(.system(size: 20, weight: .heavy))
                     .layoutPriority(1)
                 

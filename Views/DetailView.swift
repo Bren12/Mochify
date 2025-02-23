@@ -8,6 +8,11 @@ import SwiftData
 
 struct DetailView: View {
     
+    @Environment(\.dismiss) var dismiss
+    
+    @Environment(\.modelContext) private var context
+    @Query private var trips: [TripCostModel]
+    
     @Binding var selectedTab: Int
     @Binding var navigateToDetail: Bool
     
@@ -32,7 +37,7 @@ struct DetailView: View {
                     
                     // MARK: TOP
                     summaryDetail(trip: trip)
-                        .frame(width: 325)
+                        .padding(.horizontal, 33)
                     
                     if !modeCarousel {
                         
@@ -61,7 +66,7 @@ struct DetailView: View {
                                         .tag(3)
                                 }
                                 .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
-                                .frame(width: 325, height: 200)
+                                .frame(height: 200)
                             } // -> VStack
                             
                             Button {
@@ -90,13 +95,13 @@ struct DetailView: View {
                             mealDetail(trip: trip)
                                 .offset(y: -100)
                         } // -> VStack
-                        .frame(width: 325)
+                        .padding(.horizontal, 33)
                         
                     } // -> if-else
                     
                     // MARK: BOTTOM
                     finalDetail(trip: trip)
-                        .frame(width: 325)
+                        .padding(.horizontal, 33)
                         .offset(y: modeCarousel ? -119 : -38)
                     
                 } // -> VStack
@@ -115,13 +120,24 @@ struct DetailView: View {
                         
                     } // -> ZStack
                 } // -> Button
-                .padding(.horizontal, 40)
+                .padding(.horizontal, 33)
                 .offset(y: modeCarousel ? -100 : -20)
                 
             } // -> ScrollView
             .scrollIndicators(.hidden)
             
         } // -> ZStack
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button(action: {
+                    deleteTrip(trip: trip)
+                    dismiss()
+                }) {
+                    Text("Delete")
+                        .foregroundStyle(.red)
+                }
+            }
+        }
         .onDisappear {
             if selectedTab != 0 {
                 navigateToDetail = false
@@ -129,5 +145,14 @@ struct DetailView: View {
         } // -> onDisappear
         
     } // -> body
+    
+    func deleteTrip(trip: TripCostModel) {
+        context.delete(trip)
+        do {
+            try context.save()
+        } catch {
+            print("Failed to save: \(error)")
+        } // -> do-catch
+    } // -> deleteTrip
     
 } // -> SearchView

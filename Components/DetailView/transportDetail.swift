@@ -23,8 +23,10 @@ struct transportDetail: View {
                     Text("")
                         .font(.system(size: 13))
                     Text("Daily Ticket")
+                        .foregroundStyle(.black)
                         .font(.system(size: 13))
                     Text("Total")
+                        .foregroundStyle(.black)
                         .font(.system(size: 13))
                 } // -> VStack
                 .layoutPriority(1)
@@ -35,6 +37,7 @@ struct transportDetail: View {
                 VStack {
                     
                     Text("Individual")
+                        .foregroundStyle(.black)
                         .font(.system(size: 13))
                     
                     Text(String(
@@ -62,6 +65,7 @@ struct transportDetail: View {
                     VStack {
                         
                         Text("Group")
+                            .foregroundStyle(.black)
                             .font(.system(size: 13))
                         
                         Text(String(
@@ -95,6 +99,7 @@ struct transportDetail: View {
             HStack {
                 
                 Text("TRANSPORT")
+                    .foregroundStyle(.black)
                     .font(.system(size: 20, weight: .heavy))
                     .layoutPriority(1)
                 

@@ -28,6 +28,7 @@ struct summaryDetail: View {
                 HStack {
                     Spacer()
                     Text("\(dateFormat.string(from: trip.startDate))  -  \(dateFormat.string(from: trip.finalDate))")
+                        .foregroundStyle(.black)
                         .font(.system(size: 10))
                 } // -> HStack
                 
@@ -36,9 +37,11 @@ struct summaryDetail: View {
                     
                     VStack {
                         Text(trip.originCode)
+                            .foregroundStyle(.black)
                             .font(.system(size: 20, weight: .heavy))
                             .frame(width: 50)
                         Text(getCity(code: trip.originCode))
+                            .foregroundStyle(.black)
                             .font(.system(size: 10))
                             .frame(width: 50, alignment: .center)
                     } // -> VStack
@@ -54,14 +57,17 @@ struct summaryDetail: View {
                     
                     VStack {
                         Text(trip.destinyCode)
+                            .foregroundStyle(.black)
                             .font(.system(size: 20, weight: .heavy))
                             .frame(width: 50)
                         Text(getCity(code: trip.destinyCode))
+                            .foregroundStyle(.black)
                             .font(.system(size: 10))
                             .frame(width: 50, alignment: .center)
                     } // -> VStack
                     
                 } // -> HStack
+                .frame(height: 55)
                 
             } // -> VStack
             
@@ -74,8 +80,10 @@ struct summaryDetail: View {
                 
                 VStack {
                     Text("\(trip.numberOfTravelers)")
+                        .foregroundStyle(.black)
                         .font(.system(size: 17, weight: .heavy))
                     Text("Travelers")
+                        .foregroundStyle(.black)
                         .font(.system(size: 13))
                     
                 } // -> VStack
@@ -84,9 +92,11 @@ struct summaryDetail: View {
                     .frame(width: 100)
                 
                 VStack {
-                    Text("\(daysBetween(from: trip.startDate, to: trip.finalDate)+1)")
+                    Text("\(daysBetween(from: trip.startDate, to: trip.finalDate))")
+                        .foregroundStyle(.black)
                         .font(.system(size: 17, weight: .heavy))
                     Text("Days")
+                        .foregroundStyle(.black)
                         .font(.system(size: 13))
                 } // -> VStack
                 

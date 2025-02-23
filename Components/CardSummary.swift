@@ -76,7 +76,7 @@ struct CardSummary: View {
                 
                 Text(trip.originCode)
                     .font(.system(size: 20))
-                    .frame(width: 45, alignment: .leading)
+                    .frame(width: 50, alignment: .leading)
                 
                 Spacer()
                 
@@ -89,7 +89,7 @@ struct CardSummary: View {
                 
                 Text(trip.destinyCode)
                     .font(.system(size: 20))
-                    .frame(width: 45, alignment: .trailing)
+                    .frame(width: 50, alignment: .trailing)
                 
             } // -> HStack
             .frame(height: 65)
@@ -100,7 +100,7 @@ struct CardSummary: View {
                     HStack {
                         VStack {
                             // Include the current day as 1
-                            let days = daysBetween(from: trip.startDate, to: trip.finalDate) + 1
+                            let days = daysBetween(from: trip.startDate, to: trip.finalDate)
                             Text("\(days) \(days > 1 ? "days" : "day")")
                                 .font(.system(size: 15))
                                 .foregroundStyle(.gray)
@@ -122,7 +122,7 @@ struct CardSummary: View {
                     
                     Text(trip.originCode)
                         .font(.system(size: 20))
-                        .frame(width: 45, alignment: .leading)
+                        .frame(width: 50, alignment: .leading)
                     
                     Spacer()
                     
@@ -135,7 +135,7 @@ struct CardSummary: View {
                     
                     Text(trip.destinyCode)
                         .font(.system(size: 20))
-                        .frame(width: 45, alignment: .trailing)
+                        .frame(width: 50, alignment: .trailing)
                     
                 } // -> HStack
                 .frame(height: 65)

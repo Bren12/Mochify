@@ -23,12 +23,15 @@ struct flightDetail: View {
                     Text("")
                         .font(.system(size: 13))
                     Text("Departure")
+                        .foregroundStyle(.black)
                         .font(.system(size: 13))
                     if trip.isRoundTrip {
                         Text("Return")
+                            .foregroundStyle(.black)
                             .font(.system(size: 13))
                     }
                     Text("Total")
+                        .foregroundStyle(.black)
                         .font(.system(size: 13))
                 } // -> VStack
                 .layoutPriority(1)
@@ -39,6 +42,7 @@ struct flightDetail: View {
                 VStack {
                     
                     Text("Individual")
+                        .foregroundStyle(.black)
                         .font(.system(size: 13))
                     
                     Text(String(format: "€%.2f", trip.outboundFlightCost))
@@ -66,6 +70,7 @@ struct flightDetail: View {
                     VStack {
                         
                         Text("Group")
+                            .foregroundStyle(.black)
                             .font(.system(size: 13))
                         
                         Text(String(format: "€%.2f", trip.outboundFlightCost*Double(trip.numberOfTravelers)))
@@ -99,6 +104,7 @@ struct flightDetail: View {
             HStack {
                 
                 Text("FLIGHT")
+                    .foregroundStyle(.black)
                     .font(.system(size: 20, weight: .heavy))
                     .layoutPriority(1)
                 

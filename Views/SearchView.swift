@@ -169,37 +169,23 @@ struct SearchView: View {
                             
                             // MARK: SWITCH CITIES BUTTON
                                 .overlay {
-                                    Button {
-                                        let aux = origin
-                                        origin = destiny
-                                        destiny = aux
-                                    } label: {
-                                        
-                                        HStack {
-                                            
-                                            Spacer()
-                                            
-                                            ZStack {
-                                                
-                                                RoundedRectangle(cornerRadius: 8)
-                                                    .frame(width: 40, height: 40)
-                                                    .foregroundStyle(Color("AccentColor"))
-                                                
-                                                VStack {
-                                                    Image(systemName: "arrow.up.arrow.down")
-                                                        .font(.system(size: 20, weight: .heavy))
-                                                        .foregroundStyle(.white)
-                                                } // -> VStack
-                                                
-                                            } // -> ZStack
-                                            
-                                            Spacer()
-                                                .frame(width: 20)
-                                            
-                                        } // -> HStack
-                                        
-                                    } // -> Button
-                                    
+                                    HStack {
+                                        Spacer()
+                                        Button {
+                                            (origin, destiny) = (destiny, origin)
+                                        } label: {
+                                            VStack {
+                                                Image(systemName: "arrow.up.arrow.down")
+                                                    .font(.system(size: 20, weight: .heavy))
+                                                    .foregroundStyle(.white)
+                                                    .padding(10)
+                                                    .background(Color("AccentColor"))
+                                                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                                            } // -> VStack
+                                        } // -> Button
+                                        Spacer()
+                                            .frame(width: 20)
+                                    } // -> HStack
                                 } // -> overlay
                             
                             // MARK: DESTINY CITY
@@ -267,6 +253,7 @@ struct SearchView: View {
                                         displayedComponents: [.date]
                                     )
                                     .labelsHidden()
+                                    .preferredColorScheme(.light)
                                     
                                 } // -> VStack
                                 .frame(width: 120)
@@ -283,10 +270,11 @@ struct SearchView: View {
                                     DatePicker(
                                         "",
                                         selection: $finalDate,
-                                        in: Date()...,
+                                        in: startDate...,
                                         displayedComponents: [.date]
                                     )
                                     .labelsHidden()
+                                    .preferredColorScheme(.light)
                                     
                                 } // -> VStack
                                 .frame(width: 120)
@@ -337,9 +325,12 @@ struct SearchView: View {
                             
                             // MARK: BUTTON
                             Button {
-                                addTrip(isModeRoundTrip: isRoundTrip, origin: origin, destiny: destiny, dateStart: startDate, dateEnd: finalDate, numberTravelers: numberOfTravelers)
-                                navigateToDetail = true
-                                selectedTab = 1
+                                if validateValues() {
+                                    addTrip()
+                                    navigateToDetail = true
+                                    selectedTab = 1
+                                    resetValues()
+                                }
                             } label: {
                                 
                                 ZStack {
@@ -371,10 +362,15 @@ struct SearchView: View {
         
     } // -> body
     
-    func addTrip(isModeRoundTrip: Bool, origin: City, destiny: City, dateStart: Date, dateEnd: Date, numberTravelers: String) {
-        let outboundCost: Double = adjustedFlightCost(from: origin.code, to: destiny.code, flightDate: dateStart)
-        let returnCost: Double = isModeRoundTrip ? adjustedFlightCost(from: destiny.code, to: origin.code, flightDate: finalDate) : 0
-        let newTrip = TripCostModel(originCode: origin.code, destinyCode: destiny.code, outboundFlightCost: outboundCost, returnFlightCost: returnCost, startDate: dateStart, finalDate: dateEnd, numberOfTravelers: Int(numberTravelers) ?? 1)
+    func validateValues() -> Bool {
+        guard let numTravelers = Int(numberOfTravelers) else { return false }
+        return origin != dummyCity && destiny != dummyCity && startDate >= Date() && finalDate >= startDate && Int(numTravelers) > 0
+    } // -> validateValues
+    
+    func addTrip() {
+        let outboundCost: Double = adjustedFlightCost(from: origin.code, to: destiny.code, flightDate: startDate)
+        let returnCost: Double = isRoundTrip ? adjustedFlightCost(from: destiny.code, to: origin.code, flightDate: finalDate) : 0
+        let newTrip = TripCostModel(originCode: origin.code, destinyCode: destiny.code, outboundFlightCost: outboundCost, returnFlightCost: returnCost, startDate: startDate, finalDate: finalDate, numberOfTravelers: Int(numberOfTravelers) ?? 1)
         context.insert(newTrip)
         do {
             try context.save()
@@ -383,5 +379,14 @@ struct SearchView: View {
         } // -> do-catch
         tripPosted = newTrip
     } // -> addTrip
+    
+    func resetValues() {
+        isRoundTrip = true
+        origin = dummyCity
+        destiny = dummyCity
+        startDate = Date()
+        finalDate = Date()
+        numberOfTravelers = "1"
+    } // -> resetValues
     
 } // -> SearchView
