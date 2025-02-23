@@ -13,174 +13,86 @@ struct flightDetail: View {
     
     var body: some View {
         
-        VStack {
+        VStack(alignment: .leading) {
             
             // MARK: DATA
-            VStack {
-                
-                // MARK: SUBHEADERS FOR TRAVELERS
-                if trip.numberOfTravelers > 1 {
+            HStack {
                     
-                    HStack {
-                        
-                        Spacer()
-                        
-                        Text("Individual")
-                            .font(.system(size: 10))
-                            .padding(.horizontal, 70)
-                        
-                        Text("Group")
-                            .font(.system(size: 10))
-                            .padding(.horizontal, 5)
-                        
-                    } // -> HStack
-                    
-                } // -> if
-                
-                // MARK: DEPARTURE
-                HStack {
-                    
+                // MARK: 1st row
+                VStack(alignment: .leading) {
+                    Text("")
+                        .font(.system(size: 13))
                     Text("Departure")
-                        .font(.system(size: 10))
-                        .frame(width: 50, alignment: .leading)
+                        .font(.system(size: 13))
+                    if trip.isRoundTrip {
+                        Text("Return")
+                            .font(.system(size: 13))
+                    }
+                    Text("Total")
+                        .font(.system(size: 13))
+                } // -> VStack
+                .layoutPriority(1)
+                
+                Spacer()
+                
+                // MARK: 2nd row
+                VStack {
                     
-                    GeometryReader { geo in
-                        
-                        let availableWidth = geo.size.width
-                        
-                        Text(String(repeating: ".", count: Int(availableWidth/4)))
-                            .font(.system(size: 15))
-                            .foregroundStyle(Color("defaultLightGray"))
-                            .frame(maxWidth: .infinity)
-                        
-                    } // -> GeometryReader
-                    .frame(height: 20)
+                    Text("Individual")
+                        .font(.system(size: 13))
                     
                     Text(String(format: "€%.2f", trip.outboundFlightCost))
-                        .font(.system(size: 10, weight: .heavy))
+                        .font(.system(size: 13, weight: .heavy))
                         .foregroundStyle(Color("AccentColor"))
                     
-                    if trip.numberOfTravelers > 1 {
-                        
-                        GeometryReader { geo in
-                            
-                            let availableWidth = geo.size.width
-                            
-                            Text(String(repeating: ".", count: Int(availableWidth/4)))
-                                .font(.system(size: 15))
-                                .foregroundStyle(Color("defaultLightGray"))
-                                .frame(maxWidth: .infinity)
-                            
-                        } // -> GeometryReader
-                        .frame(height: 20)
-                        
-                        Text(String(format: "€%.2f", trip.outboundFlightCost*Double(trip.numberOfTravelers)))
-                            .font(.system(size: 10, weight: .heavy))
+                    if trip.isRoundTrip {
+                        Text(String(format: "€%.2f", trip.returnFlightCost))
+                            .font(.system(size: 13, weight: .heavy))
                             .foregroundStyle(Color("AccentColor"))
-                        
                     } // -> if
                     
-                } // -> HStack
-                
-                if trip.isRoundTrip {
+                    Text(String(format: "€%.2f", trip.outboundFlightCost + trip.returnFlightCost))
+                        .font(.system(size: 13, weight: .heavy))
+                        .foregroundStyle(Color("AccentColor"))
                     
-                    // MARK: RETURN
-                    HStack {
+                } // -> VStack
+                .layoutPriority(1)
+                
+                // MARK: 3rd row
+                if trip.numberOfTravelers > 1 {
+                    
+                    Spacer()
+                    
+                    VStack {
                         
-                        Text("Return")
-                            .font(.system(size: 10))
-                            .frame(width: 50, alignment: .leading)
+                        Text("Group")
+                            .font(.system(size: 13))
                         
-                        GeometryReader { geo in
-                            
-                            let availableWidth = geo.size.width
-                            
-                            Text(String(repeating: ".", count: Int(availableWidth/4)))
-                                .font(.system(size: 15))
-                                .foregroundStyle(Color("defaultLightGray"))
-                                .frame(maxWidth: .infinity)
-                            
-                        } // -> GeometryReader
-                        .frame(height: 20)
-                        
-                        Text(String(format: "€%.2f", trip.returnFlightCost))
-                            .font(.system(size: 10, weight: .heavy))
+                        Text(String(format: "€%.2f", trip.outboundFlightCost*Double(trip.numberOfTravelers)))
+                            .font(.system(size: 13, weight: .heavy))
                             .foregroundStyle(Color("AccentColor"))
-                        
-                        if trip.numberOfTravelers > 1 {
                             
-                            GeometryReader { geo in
-                                
-                                let availableWidth = geo.size.width
-                                
-                                Text(String(repeating: ".", count: Int(availableWidth/4)))
-                                    .font(.system(size: 15))
-                                    .foregroundStyle(Color("defaultLightGray"))
-                                    .frame(maxWidth: .infinity)
-                                
-                            } // -> GeometryReader
-                            .frame(height: 20)
-                            
+                        if trip.isRoundTrip {
                             Text(String(format: "€%.2f", (trip.returnFlightCost)*Double(trip.numberOfTravelers)))
-                                .font(.system(size: 10, weight: .heavy))
+                                .font(.system(size: 13, weight: .heavy))
                                 .foregroundStyle(Color("AccentColor"))
-                            
                         } // -> if
                         
-                    } // -> HStack
+                        Text(String(format: "€%.2f", (trip.outboundFlightCost + trip.returnFlightCost)*Double(trip.numberOfTravelers)))
+                            .font(.system(size: 13, weight: .heavy))
+                            .foregroundStyle(Color("AccentColor"))
+                        
+                    } // -> VStack
+                    .layoutPriority(1)
                     
                 } // -> if
                 
-                // MARK: TOTAL
-                HStack {
-                    
-                    Text("Total")
-                        .font(.system(size: 10))
-                        .frame(width: 50, alignment: .leading)
-                    
-                    GeometryReader { geo in
-                        
-                        let availableWidth = geo.size.width
-                        
-                        Text(String(repeating: ".", count: Int(availableWidth/4)))
-                            .font(.system(size: 15))
-                            .foregroundStyle(Color("defaultLightGray"))
-                            .frame(maxWidth: .infinity)
-                        
-                    } // -> GeometryReader
-                    .frame(height: 20)
-                    
-                    Text(String(format: "€%.2f", trip.outboundFlightCost + trip.returnFlightCost))
-                        .font(.system(size: 10, weight: .heavy))
-                        .foregroundStyle(Color("AccentColor"))
-                    
-                    if trip.numberOfTravelers > 1 {
-                        
-                        GeometryReader { geo in
-                            
-                            let availableWidth = geo.size.width
-                            
-                            Text(String(repeating: ".", count: Int(availableWidth/4)))
-                                .font(.system(size: 15))
-                                .foregroundStyle(Color("defaultLightGray"))
-                                .frame(maxWidth: .infinity)
-                            
-                        } // -> GeometryReader
-                        .frame(height: 20)
-                        
-                        Text(String(format: "€%.2f", (trip.outboundFlightCost + trip.returnFlightCost)*Double(trip.numberOfTravelers)))
-                            .font(.system(size: 10, weight: .heavy))
-                            .foregroundStyle(Color("AccentColor"))
-                        
-                    } // -> if
-                    
-                } // -> HStack
-                
-            } // -> VStack
-            .padding(.vertical, 20)
+            } // -> HStack
+            .frame(height: 50)
+            .padding(.bottom, 25)
             
             Line()
-                .stroke(Color("defaultLightGray"), style: StrokeStyle(lineWidth: 1, dash: [5]))
+                .stroke(Color("defaultLightGray"), style: StrokeStyle(lineWidth: 1, dash: [10]))
                 .frame(height: 1)
             
             // MARK: TOTAL
@@ -188,29 +100,27 @@ struct flightDetail: View {
                 
                 Text("FLIGHT")
                     .font(.system(size: 20, weight: .heavy))
+                    .layoutPriority(1)
                 
-                GeometryReader { geo in
-                    
-                    let availableWidth = geo.size.width
-                    
-                    Text(String(repeating: ".", count: Int(availableWidth/4)))
-                        .font(.system(size: 15))
-                        .foregroundStyle(Color("defaultLightGray"))
-                        .frame(maxWidth: .infinity)
-                    
-                } // -> GeometryReader
-                .frame(height: 12)
+                Line()
+                    .stroke(Color("defaultLightGray"), style: StrokeStyle(lineWidth: 1, dash: [2]))
+                    .frame(height: 1)
+                    .offset(y: 7)
                 
-                Text(String(format: "€%.2f", (trip.outboundFlightCost + trip.returnFlightCost)*Double(trip.numberOfTravelers)))
+                Text(String(
+                    format: "€%.2f",
+                    (trip.outboundFlightCost + trip.returnFlightCost)*Double(trip.numberOfTravelers)
+                )) // -> Text
                     .font(.system(size: 20, weight: .heavy))
                     .foregroundStyle(Color("AccentColor"))
+                    .layoutPriority(1)
                 
             } // -> HStack
-            .padding(.vertical, 20)
-            .padding(.bottom, 10)
+            .padding(.top, 10)
             
         } // -> VStack
         .padding(.horizontal, 30)
+        .padding(.vertical, 20)
         .frame(height: 200)
         .background(.white)
         .clipShape(

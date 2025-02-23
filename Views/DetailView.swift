@@ -17,8 +17,6 @@ struct DetailView: View {
     
     @State var modeCarousel: Bool = false
     
-    var tripAux : TripCostModel = TripCostModel(originCode: "MEX", destinyCode: "FRA", outboundFlightCost: 50, returnFlightCost: 100, startDate: Date(), finalDate: Date(), numberOfTravelers: 2)
-    
     var body: some View {
         
         ZStack {

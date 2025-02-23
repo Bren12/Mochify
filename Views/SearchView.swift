@@ -164,8 +164,9 @@ struct SearchView: View {
                             .frame(height: 65)
                             
                             Line()
-                                .stroke(Color("defaultLightGray"), style: StrokeStyle(lineWidth: 1, dash: [5]))
+                                .stroke(Color("defaultLightGray"), style: StrokeStyle(lineWidth: 1, dash: [10]))
                                 .frame(height: 1)
+                            
                             // MARK: SWITCH CITIES BUTTON
                                 .overlay {
                                     Button {

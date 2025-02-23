@@ -13,7 +13,114 @@ struct finalDetail: View {
     
     var body: some View {
         
-        VStack {
+        VStack(alignment: .leading) {
+            
+            // MARK: DATA
+            HStack {
+                    
+                // MARK: 1st row
+                VStack(alignment: .leading) {
+                    Text("")
+                        .font(.system(size: 13))
+                    Text("Flight")
+                        .font(.system(size: 13))
+                    Text("Hotel")
+                        .font(.system(size: 13))
+                    Text("Transport")
+                        .font(.system(size: 13))
+                    Text("Meal")
+                        .font(.system(size: 13))
+                } // -> VStack
+                .layoutPriority(1)
+                
+                Spacer()
+                
+                // MARK: 2nd row
+                VStack {
+                    
+                    Text("Individual")
+                        .font(.system(size: 13))
+                    
+                    Text(String(
+                        format: "€%.2f",
+                        trip.outboundFlightCost + trip.returnFlightCost
+                    )) // -> Text
+                        .font(.system(size: 13, weight: .heavy))
+                        .foregroundStyle(Color("AccentColor"))
+                    
+                    Text(String(
+                        format: "€%.2f",
+                        getCostCity(code: trip.destinyCode).hotelCost*Double(daysBetween(from: trip.startDate, to: trip.finalDate))
+                    )) // -> Text
+                        .font(.system(size: 13, weight: .heavy))
+                        .foregroundStyle(Color("AccentColor"))
+                    
+                    Text(String(
+                        format: "€%.2f",
+                        getCostCity(code: trip.destinyCode).transportCost*Double(daysBetween(from: trip.startDate, to: trip.finalDate)+1)
+                    )) // -> Text
+                        .font(.system(size: 13, weight: .heavy))
+                        .foregroundStyle(Color("AccentColor"))
+                    
+                    Text(String(
+                        format: "€%.2f",
+                        getCostCity(code: trip.destinyCode).mealCost*Double(daysBetween(from: trip.startDate, to: trip.finalDate)+1)
+                    )) // -> Text
+                        .font(.system(size: 13, weight: .heavy))
+                        .foregroundStyle(Color("AccentColor"))
+                    
+                } // -> VStack
+                .layoutPriority(1)
+                
+                // MARK: 3rd row
+                if trip.numberOfTravelers > 1 {
+                    
+                    Spacer()
+                    
+                    VStack {
+                        
+                        Text("Group")
+                            .font(.system(size: 13))
+                        
+                        Text(String(
+                            format: "€%.2f",
+                            (trip.outboundFlightCost + trip.returnFlightCost)*Double(trip.numberOfTravelers)
+                        )) // -> Text
+                            .font(.system(size: 13, weight: .heavy))
+                            .foregroundStyle(Color("AccentColor"))
+                        
+                        Text(String(
+                            format: "€%.2f",
+                            getCostCity(code: trip.destinyCode).hotelCost*Double(daysBetween(from: trip.startDate, to: trip.finalDate)*trip.numberOfTravelers)
+                        )) // -> Text
+                            .font(.system(size: 13, weight: .heavy))
+                            .foregroundStyle(Color("AccentColor"))
+                        
+                        Text(String(
+                            format: "€%.2f",
+                            getCostCity(code: trip.destinyCode).transportCost*Double((daysBetween(from: trip.startDate, to: trip.finalDate)+1)*trip.numberOfTravelers)
+                        )) // -> Text
+                            .font(.system(size: 13, weight: .heavy))
+                            .foregroundStyle(Color("AccentColor"))
+                        
+                        Text(String(
+                            format: "€%.2f",
+                            getCostCity(code: trip.destinyCode).mealCost*Double((daysBetween(from: trip.startDate, to: trip.finalDate)+1)*trip.numberOfTravelers)
+                        )) // -> Text
+                            .font(.system(size: 13, weight: .heavy))
+                            .foregroundStyle(Color("AccentColor"))
+                        
+                    } // -> VStack
+                    .layoutPriority(1)
+                    
+                } // -> if
+                
+            } // -> HStack
+            .padding(.bottom, 15)
+            
+            Line()
+                .stroke(Color("defaultLightGray"), style: StrokeStyle(lineWidth: 1, dash: [10]))
+                .frame(height: 1)
             
             // MARK: RETURN
             if trip.isRoundTrip {
@@ -25,7 +132,7 @@ struct finalDetail: View {
                     
                     Spacer()
                     
-                    Image("flight")
+                    Image("flightReturn")
                         .resizable()
                         .scaledToFit()
                         .padding()
@@ -37,10 +144,9 @@ struct finalDetail: View {
                         .frame(width: 45, alignment: .trailing)
                     
                 } // -> HStack
-                .frame(height: 100)
                 
                 Line()
-                    .stroke(Color("defaultLightGray"), style: StrokeStyle(lineWidth: 1, dash: [5]))
+                    .stroke(Color("defaultLightGray"), style: StrokeStyle(lineWidth: 1, dash: [10]))
                     .frame(height: 1)
                 
             } // -> if
@@ -50,30 +156,24 @@ struct finalDetail: View {
                 
                 Text("TOTAL")
                     .font(.system(size: 20, weight: .heavy))
+                    .layoutPriority(1)
                 
-                GeometryReader { geo in
-                    
-                    let availableWidth = geo.size.width
-                    
-                    Text(String(repeating: ".", count: Int(availableWidth/4)))
-                        .font(.system(size: 15))
-                        .foregroundStyle(Color("defaultLightGray"))
-                        .frame(maxWidth: .infinity)
-                    
-                } // -> GeometryReader
-                .frame(height: 12)
+                Line()
+                    .stroke(Color("defaultLightGray"), style: StrokeStyle(lineWidth: 1, dash: [2]))
+                    .frame(height: 1)
+                    .offset(y: 7)
                 
                 Text(String(format: "€%.2f", totalTripCost(trip: trip)))
                     .font(.system(size: 20, weight: .heavy))
                     .foregroundStyle(Color("AccentColor"))
+                    .layoutPriority(1)
                 
             } // -> HStack
-            .padding(.vertical, 20)
-            .padding(.bottom, 10)
+            .padding(.top, 10)
             
         } // -> VStack
         .padding(.horizontal, 30)
-        .frame(height: 150)
+        .frame(height: trip.isRoundTrip ? 260 : 180)
         .background(.white)
         .clipShape(
             TicketBottom(cornerRadius: 20, cutRadius: 20)

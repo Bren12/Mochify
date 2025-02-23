@@ -80,7 +80,7 @@ struct CardSummary: View {
                 
                 Spacer()
                 
-                Image("flight")
+                Image("flightDeparture")
                     .resizable()
                     .scaledToFit()
                     .padding()
@@ -120,20 +120,20 @@ struct CardSummary: View {
                 
                 HStack {
                     
-                    Text(trip.destinyCode)
+                    Text(trip.originCode)
                         .font(.system(size: 20))
                         .frame(width: 45, alignment: .leading)
                     
                     Spacer()
                     
-                    Image("flight")
+                    Image("flightReturn")
                         .resizable()
                         .scaledToFit()
                         .padding()
                     
                     Spacer()
                     
-                    Text(trip.originCode)
+                    Text(trip.destinyCode)
                         .font(.system(size: 20))
                         .frame(width: 45, alignment: .trailing)
                     
@@ -150,17 +150,10 @@ struct CardSummary: View {
                 Text("TOTAL")
                     .font(.system(size: 20))
                 
-                GeometryReader { geo in
-                    
-                    let availableWidth = geo.size.width
-                        
-                    Text(String(repeating: ".", count: Int(availableWidth/5)))
-                        .font(.system(size: 20))
-                        .foregroundStyle(Color("defaultLightGray"))
-                        .frame(maxWidth: .infinity)
-                        .padding(.top, 21)
-                    
-                } // -> GeometryReader
+                Line()
+                    .stroke(Color("defaultLightGray"), style: StrokeStyle(lineWidth: 1, dash: [2]))
+                    .frame(height: 1)
+                    .offset(y: 7)
                 
                 Text(String(format: "€%.2f", totalTripCost(trip: trip)))
                     .font(.system(size: 20, weight: .heavy))

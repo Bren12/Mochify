@@ -24,51 +24,59 @@ struct summaryDetail: View {
             // MARK: DEPARTURE
             VStack(spacing: 0) {
                 
+                // MARK: DATE
                 HStack {
                     Spacer()
-                    Text("\(dateFormat.string(from: trip.startDate))")
+                    Text("\(dateFormat.string(from: trip.startDate))  -  \(dateFormat.string(from: trip.finalDate))")
                         .font(.system(size: 10))
                 } // -> HStack
                 
+                // MARK: FLIGHT
                 HStack {
                     
-                    Text(trip.originCode)
-                        .font(.system(size: 20, weight: .heavy))
-                        .frame(width: 45, alignment: .leading)
+                    VStack {
+                        Text(trip.originCode)
+                            .font(.system(size: 20, weight: .heavy))
+                            .frame(width: 50)
+                        Text(getCity(code: trip.originCode))
+                            .font(.system(size: 10))
+                            .frame(width: 50, alignment: .center)
+                    } // -> VStack
                     
                     Spacer()
                     
-                    Image("flight")
+                    Image("flightDeparture")
                         .resizable()
                         .scaledToFit()
                         .padding()
                     
                     Spacer()
                     
-                    Text(trip.destinyCode)
-                        .font(.system(size: 20, weight: .heavy))
-                        .frame(width: 45, alignment: .trailing)
+                    VStack {
+                        Text(trip.destinyCode)
+                            .font(.system(size: 20, weight: .heavy))
+                            .frame(width: 50)
+                        Text(getCity(code: trip.destinyCode))
+                            .font(.system(size: 10))
+                            .frame(width: 50, alignment: .center)
+                    } // -> VStack
                     
                 } // -> HStack
                 
             } // -> VStack
-            .frame(height: 90)
-            .padding(.top, 20)
             
             Line()
-                .stroke(Color("defaultLightGray"), style: StrokeStyle(lineWidth: 1, dash: [5]))
+                .stroke(Color("defaultLightGray"), style: StrokeStyle(lineWidth: 1, dash: [10]))
                 .frame(height: 1)
             
             // MARK: EXTRA INFO
             HStack {
                 
                 VStack {
-                    
                     Text("\(trip.numberOfTravelers)")
-                        .font(.system(size: 15, weight: .heavy))
-                    
+                        .font(.system(size: 17, weight: .heavy))
                     Text("Travelers")
-                        .font(.system(size: 10))
+                        .font(.system(size: 13))
                     
                 } // -> VStack
                 
@@ -76,20 +84,17 @@ struct summaryDetail: View {
                     .frame(width: 100)
                 
                 VStack {
-                    
                     Text("\(daysBetween(from: trip.startDate, to: trip.finalDate)+1)")
-                        .font(.system(size: 15, weight: .heavy))
-                    
+                        .font(.system(size: 17, weight: .heavy))
                     Text("Days")
-                        .font(.system(size: 10))
-                    
+                        .font(.system(size: 13))
                 } // -> VStack
                 
             } // -> HStack
-            .padding(.vertical, 20)
-            .padding(.bottom, 20)
+            .padding(.vertical, 5)
             
         } // -> VStack
+        .padding(.vertical, 30)
         .padding(.horizontal, 30)
         .background(.white)
         .clipShape(

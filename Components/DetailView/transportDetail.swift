@@ -13,125 +13,82 @@ struct transportDetail: View {
     
     var body: some View {
         
-        VStack {
+        VStack(alignment: .leading) {
             
             // MARK: DATA
-            VStack {
+            HStack {
+                    
+                // MARK: 1st row
+                VStack(alignment: .leading) {
+                    Text("")
+                        .font(.system(size: 13))
+                    Text("Daily Ticket")
+                        .font(.system(size: 13))
+                    Text("Total")
+                        .font(.system(size: 13))
+                } // -> VStack
+                .layoutPriority(1)
                 
-                // MARK: HEADERS FOR TRAVELERS
+                Spacer()
+                
+                // MARK: 2nd row
+                VStack {
+                    
+                    Text("Individual")
+                        .font(.system(size: 13))
+                    
+                    Text(String(
+                        format: "€%.2f",
+                        getCostCity(code: trip.destinyCode).transportCost
+                    )) // -> Text
+                        .font(.system(size: 13, weight: .heavy))
+                        .foregroundStyle(Color("AccentColor"))
+                    
+                    Text(String(
+                        format: "€%.2f",
+                        getCostCity(code: trip.destinyCode).transportCost*Double(daysBetween(from: trip.startDate, to: trip.finalDate)+1)
+                    )) // -> Text
+                        .font(.system(size: 13, weight: .heavy))
+                        .foregroundStyle(Color("AccentColor"))
+                    
+                } // -> VStack
+                .layoutPriority(1)
+                
+                // MARK: 3rd row
                 if trip.numberOfTravelers > 1 {
                     
-                    HStack {
-                        
-                        Spacer()
-                        
-                        Text("Individual")
-                            .font(.system(size: 10))
-                            .padding(.horizontal, 70)
+                    Spacer()
+                    
+                    VStack {
                         
                         Text("Group")
-                            .font(.system(size: 10))
-                            .padding(.horizontal, 5)
+                            .font(.system(size: 13))
                         
-                    } // -> HStack
+                        Text(String(
+                            format: "€%.2f",
+                            getCostCity(code: trip.destinyCode).transportCost*Double(trip.numberOfTravelers)
+                        )) // -> Text
+                            .font(.system(size: 13, weight: .heavy))
+                            .foregroundStyle(Color("AccentColor"))
+                        
+                        Text(String(
+                            format: "€%.2f",
+                            getCostCity(code: trip.destinyCode).transportCost*Double((daysBetween(from: trip.startDate, to: trip.finalDate)+1)*trip.numberOfTravelers)
+                        )) // -> Text
+                            .font(.system(size: 13, weight: .heavy))
+                            .foregroundStyle(Color("AccentColor"))
+                        
+                    } // -> VStack
+                    .layoutPriority(1)
                     
                 } // -> if
                 
-                // MARK: TRANSPORT DAY
-                HStack {
-                    
-                    Text("Daily Ticket")
-                        .font(.system(size: 10))
-                        .frame(width: 50, alignment: .leading)
-                    
-                    GeometryReader { geo in
-                        
-                        let availableWidth = geo.size.width
-                        
-                        Text(String(repeating: ".", count: Int(availableWidth/4)))
-                            .font(.system(size: 15))
-                            .foregroundStyle(Color("defaultLightGray"))
-                            .frame(maxWidth: .infinity)
-                        
-                    } // -> GeometryReader
-                    .frame(height: 20)
-                    
-                    Text(String(format: "€%.2f", getCostCity(code: trip.destinyCode).transportCost))
-                        .font(.system(size: 10, weight: .heavy))
-                        .foregroundStyle(Color("AccentColor"))
-                    
-                    if trip.numberOfTravelers > 1 {
-                        
-                        GeometryReader { geo in
-                            
-                            let availableWidth = geo.size.width
-                            
-                            Text(String(repeating: ".", count: Int(availableWidth/4)))
-                                .font(.system(size: 15))
-                                .foregroundStyle(Color("defaultLightGray"))
-                                .frame(maxWidth: .infinity)
-                            
-                        } // -> GeometryReader
-                        .frame(height: 20)
-                        
-                        Text(String(format: "€%.2f", (getCostCity(code: trip.destinyCode).transportCost)*Double(trip.numberOfTravelers)))
-                            .font(.system(size: 10, weight: .heavy))
-                            .foregroundStyle(Color("AccentColor"))
-                        
-                    } // -> if
-                    
-                } // -> HStack
-                    
-                // MARK: TOTAL
-                HStack {
-                    
-                    Text("Total")
-                        .font(.system(size: 10))
-                        .frame(width: 50, alignment: .leading)
-                    
-                    GeometryReader { geo in
-                        
-                        let availableWidth = geo.size.width
-                        
-                        Text(String(repeating: ".", count: Int(availableWidth/4)))
-                            .font(.system(size: 15))
-                            .foregroundStyle(Color("defaultLightGray"))
-                            .frame(maxWidth: .infinity)
-                        
-                    } // -> GeometryReader
-                    .frame(height: 20)
-                    
-                    Text(String(format: "€%.2f", getCostCity(code: trip.destinyCode).transportCost*Double(daysBetween(from: trip.startDate, to: trip.finalDate) + 1)))
-                        .font(.system(size: 10, weight: .heavy))
-                        .foregroundStyle(Color("AccentColor"))
-                    
-                    if trip.numberOfTravelers > 1 {
-                        
-                        GeometryReader { geo in
-                            
-                            let availableWidth = geo.size.width
-                            
-                            Text(String(repeating: ".", count: Int(availableWidth/4)))
-                                .font(.system(size: 15))
-                                .foregroundStyle(Color("defaultLightGray"))
-                                .frame(maxWidth: .infinity)
-                            
-                        } // -> GeometryReader
-                        .frame(height: 20)
-                        
-                        Text(String(format: "€%.2f", getCostCity(code: trip.destinyCode).transportCost*Double(daysBetween(from: trip.startDate, to: trip.finalDate) + 1)*Double(trip.numberOfTravelers)))
-                            .font(.system(size: 10, weight: .heavy))
-                            .foregroundStyle(Color("AccentColor"))
-                        
-                    } // -> if
-                    
-                } // -> HStack
-                
-            } // -> VStack
-            .padding(.vertical, 20)
+            } // -> HStack
+            .frame(height: 50)
+            .padding(.bottom, 25)
             
             Line()
-                .stroke(Color("defaultLightGray"), style: StrokeStyle(lineWidth: 1, dash: [5]))
+                .stroke(Color("defaultLightGray"), style: StrokeStyle(lineWidth: 1, dash: [10]))
                 .frame(height: 1)
             
             // MARK: TOTAL
@@ -139,29 +96,27 @@ struct transportDetail: View {
                 
                 Text("TRANSPORT")
                     .font(.system(size: 20, weight: .heavy))
+                    .layoutPriority(1)
                 
-                GeometryReader { geo in
-                    
-                    let availableWidth = geo.size.width
-                    
-                    Text(String(repeating: ".", count: Int(availableWidth/4)))
-                        .font(.system(size: 15))
-                        .foregroundStyle(Color("defaultLightGray"))
-                        .frame(maxWidth: .infinity)
-                    
-                } // -> GeometryReader
-                .frame(height: 12)
+                Line()
+                    .stroke(Color("defaultLightGray"), style: StrokeStyle(lineWidth: 1, dash: [2]))
+                    .frame(height: 1)
+                    .offset(y: 7)
                 
-                Text(String(format: "€%.2f", getCostCity(code: trip.destinyCode).transportCost*Double(daysBetween(from: trip.startDate, to: trip.finalDate) + 1)*Double(trip.numberOfTravelers)))
+                Text(String(
+                    format: "€%.2f",
+                    getCostCity(code: trip.destinyCode).transportCost*Double((daysBetween(from: trip.startDate, to: trip.finalDate)+1)*trip.numberOfTravelers)
+                )) // -> Text
                     .font(.system(size: 20, weight: .heavy))
                     .foregroundStyle(Color("AccentColor"))
+                    .layoutPriority(1)
                 
             } // -> HStack
-            .padding(.vertical, 20)
-            .padding(.bottom, 10)
+            .padding(.top, 10)
             
         } // -> VStack
         .padding(.horizontal, 30)
+        .padding(.vertical, 20)
         .frame(height: 200)
         .background(.white)
         .clipShape(
