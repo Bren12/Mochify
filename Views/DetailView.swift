@@ -11,372 +11,117 @@ struct DetailView: View {
     @Binding var selectedTab: Int
     @Binding var navigateToDetail: Bool
     
+    @State var selectedDetail: Int = 0
+    
     @State var trip: TripCostModel
     
-    var tripAux : TripCostModel = TripCostModel(originCode: "MEX", destinyCode: "FRA", outboundFlightCost: 50, returnFlightCost: 100, startDate: Date(), finalDate: Date(), numberOfTravelers: 2)
+    @State var modeCarousel: Bool = false
     
-    var dateFormat: DateFormatter {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "MMMM d, yyyy"
-        return formatter
-    }
+    var tripAux : TripCostModel = TripCostModel(originCode: "MEX", destinyCode: "FRA", outboundFlightCost: 50, returnFlightCost: 100, startDate: Date(), finalDate: Date(), numberOfTravelers: 2)
     
     var body: some View {
         
         ZStack {
             
             Color("background")
-            
-            VStack(spacing: 0) {
                 
-                // MARK: TOP
-                VStack {
+            ScrollView {
+                
+                VStack(spacing: 0) {
                     
-                    // MARK: DEPARTURE
-                    VStack(spacing: 0) {
+                    Spacer()
+                        .frame(height: 20)
+                    
+                    // MARK: TOP
+                    summaryDetail(trip: trip)
+                        .frame(width: 325)
+                    
+                    if !modeCarousel {
                         
                         HStack {
-                            Spacer()
-                            Text("\(dateFormat.string(from: tripAux.startDate))")
-                                .font(.system(size: 10))
+                            
+                            Button {
+                                selectedDetail = (selectedDetail > 0) ? selectedDetail - 1 : selectedDetail
+                            } label: {
+                                Image(systemName: "chevron.left")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 15)
+                                    .foregroundStyle(Color("AccentColor"))
+                            } // -> Button
+                            
+                            VStack {
+                                // MARK: MIDDLE
+                                TabView(selection: $selectedDetail) {
+                                    flightDetail(trip: trip)
+                                        .tag(0)
+                                    hotelDetail(trip: trip)
+                                        .tag(1)
+                                    transportDetail(trip: trip)
+                                        .tag(2)
+                                    mealDetail(trip: trip)
+                                        .tag(3)
+                                }
+                                .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+                                .frame(width: 325, height: 200)
+                            } // -> VStack
+                            
+                            Button {
+                                selectedDetail = (selectedDetail < 3) ? selectedDetail + 1 : selectedDetail
+                            } label: {
+                                Image(systemName: "chevron.right")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 15)
+                                    .foregroundStyle(Color("AccentColor"))
+                            } // -> Button
+                            
                         } // -> HStack
+                        .padding(.horizontal, 10)
+                        .offset(y: -19)
                         
-                        HStack {
-                            
-                            Text(tripAux.originCode)
-                                .font(.system(size: 20, weight: .heavy))
-                                .frame(width: 45, alignment: .leading)
-                            
-                            Spacer()
-                            
-                            Image("flight")
-                                .resizable()
-                                .scaledToFit()
-                                .padding()
-                            
-                            Spacer()
-                            
-                            Text(tripAux.destinyCode)
-                                .font(.system(size: 20, weight: .heavy))
-                                .frame(width: 45, alignment: .trailing)
-                            
-                        } // -> HStack
-                        
-                    } // -> VStack
-                    .frame(height: 100)
-                    .padding(.top, 30)
-                    
-                    Line()
-                        .stroke(Color("defaultLightGray"), style: StrokeStyle(lineWidth: 1, dash: [5]))
-                        .frame(height: 1)
-                    
-                    // MARK: EXTRA INFO
-                    HStack {
+                    } else {
                         
                         VStack {
-                            
-                            Text("\(tripAux.numberOfTravelers)")
-                                .font(.system(size: 15, weight: .heavy))
-                            
-                            Text("Travelers")
-                                .font(.system(size: 10))
-                            
+                            flightDetail(trip: trip)
+                                .offset(y: -19)
+                            hotelDetail(trip: trip)
+                                .offset(y: -46)
+                            transportDetail(trip: trip)
+                                .offset(y: -73)
+                            mealDetail(trip: trip)
+                                .offset(y: -100)
                         } // -> VStack
+                        .frame(width: 325)
                         
-                        Spacer()
-                            .frame(width: 100)
-                        
-                        VStack {
-                            
-                            Text("\(daysBetween(from: tripAux.startDate, to: tripAux.finalDate)+1)")
-                                .font(.system(size: 15, weight: .heavy))
-                            
-                            Text("Days")
-                                .font(.system(size: 10))
-                            
-                        } // -> VStack
-                        
-                    } // -> HStack
-                    .padding(.vertical, 30)
-                    .padding(.bottom, 20)
+                    } // -> if-else
+                    
+                    // MARK: BOTTOM
+                    finalDetail(trip: trip)
+                        .frame(width: 325)
+                        .offset(y: modeCarousel ? -119 : -38)
                     
                 } // -> VStack
-                .padding(.horizontal, 30)
-                .background(.white)
-                .clipShape(
-                    TicketUpper(cornerRadius: 20, cutRadius: 20)
-                ) // -> clipShape
                 
-                // MARK: MIDDLE
-                VStack {
-                    
-                    // MARK: DATA
-                    VStack {
+                Button {
+                    modeCarousel.toggle()
+                } label: {
+                    ZStack {
                         
-                        // MARK: SUBHEADERS FOR TRAVELERS
-                        if tripAux.numberOfTravelers > 1 {
-                            
-                            HStack {
-                                
-                                Spacer()
-                                
-                                Text("Individual")
-                                    .font(.system(size: 10))
-                                    .padding(.horizontal, 70)
-                                
-                                Text("Group")
-                                    .font(.system(size: 10))
-                                    .padding(.horizontal, 5)
-                                
-                            } // -> HStack
-                            
-                        } // -> if
+                        RoundedRectangle(cornerRadius: 20)
+                            .frame(height: 60)
                         
-                        // MARK: DEPARTURE
-                        HStack {
-                                
-                            Text("Departure")
-                                .font(.system(size: 10))
-                                .frame(width: 50, alignment: .leading)
-                            
-                            GeometryReader { geo in
-                                
-                                let availableWidth = geo.size.width
-                                    
-                                Text(String(repeating: ".", count: Int(availableWidth/4)))
-                                    .font(.system(size: 15))
-                                    .foregroundStyle(Color("defaultLightGray"))
-                                    .frame(maxWidth: .infinity)
-                                
-                            } // -> GeometryReader
-                            .frame(height: 20)
-                            
-                            Text(String(format: "€%.2f", tripAux.outboundFlightCost))
-                                .font(.system(size: 10, weight: .heavy))
-                                .foregroundStyle(Color("AccentColor"))
-                            
-                            if tripAux.numberOfTravelers > 1 {
-                                
-                                GeometryReader { geo in
-                                    
-                                    let availableWidth = geo.size.width
-                                    
-                                    Text(String(repeating: ".", count: Int(availableWidth/4)))
-                                        .font(.system(size: 15))
-                                        .foregroundStyle(Color("defaultLightGray"))
-                                        .frame(maxWidth: .infinity)
-                                    
-                                } // -> GeometryReader
-                                .frame(height: 20)
-                                
-                                Text(String(format: "€%.2f", tripAux.outboundFlightCost*Double(tripAux.numberOfTravelers)))
-                                    .font(.system(size: 10, weight: .heavy))
-                                    .foregroundStyle(Color("AccentColor"))
-                                
-                            } // -> if
-                            
-                        } // -> HStack
+                        Text(modeCarousel ? "Collapse All" : "Expand All")
+                            .foregroundStyle(.white)
+                            .font(.system(size: 25, weight: .heavy))
                         
-                        // MARK: RETURN
-                        HStack {
-                                
-                            Text("Return")
-                                .font(.system(size: 10))
-                                .frame(width: 50, alignment: .leading)
-                            
-                            GeometryReader { geo in
-                                
-                                let availableWidth = geo.size.width
-                                    
-                                Text(String(repeating: ".", count: Int(availableWidth/4)))
-                                    .font(.system(size: 15))
-                                    .foregroundStyle(Color("defaultLightGray"))
-                                    .frame(maxWidth: .infinity)
-                                
-                            } // -> GeometryReader
-                            .frame(height: 20)
-                            
-                            Text(String(format: "€%.2f", tripAux.returnFlightCost))
-                                .font(.system(size: 10, weight: .heavy))
-                                .foregroundStyle(Color("AccentColor"))
-                            
-                            if tripAux.numberOfTravelers > 1 {
-                                
-                                GeometryReader { geo in
-                                    
-                                    let availableWidth = geo.size.width
-                                    
-                                    Text(String(repeating: ".", count: Int(availableWidth/4)))
-                                        .font(.system(size: 15))
-                                        .foregroundStyle(Color("defaultLightGray"))
-                                        .frame(maxWidth: .infinity)
-                                    
-                                } // -> GeometryReader
-                                .frame(height: 20)
-                                
-                                Text(String(format: "€%.2f", (tripAux.returnFlightCost)*Double(tripAux.numberOfTravelers)))
-                                    .font(.system(size: 10, weight: .heavy))
-                                    .foregroundStyle(Color("AccentColor"))
-                                
-                            } // -> if
-                            
-                        } // -> HStack
-                        
-                        // MARK: TOTAL
-                        HStack {
-                                
-                            Text("Total")
-                                .font(.system(size: 10))
-                                .frame(width: 50, alignment: .leading)
-                            
-                            GeometryReader { geo in
-                                
-                                let availableWidth = geo.size.width
-                                    
-                                Text(String(repeating: ".", count: Int(availableWidth/4)))
-                                    .font(.system(size: 15))
-                                    .foregroundStyle(Color("defaultLightGray"))
-                                    .frame(maxWidth: .infinity)
-                                
-                            } // -> GeometryReader
-                            .frame(height: 20)
-                            
-                            Text(String(format: "€%.2f", tripAux.outboundFlightCost + tripAux.returnFlightCost))
-                                .font(.system(size: 10, weight: .heavy))
-                                .foregroundStyle(Color("AccentColor"))
-                            
-                            if tripAux.numberOfTravelers > 1 {
-                                
-                                GeometryReader { geo in
-                                    
-                                    let availableWidth = geo.size.width
-                                    
-                                    Text(String(repeating: ".", count: Int(availableWidth/4)))
-                                        .font(.system(size: 15))
-                                        .foregroundStyle(Color("defaultLightGray"))
-                                        .frame(maxWidth: .infinity)
-                                    
-                                } // -> GeometryReader
-                                .frame(height: 20)
-                                
-                                Text(String(format: "€%.2f", (tripAux.outboundFlightCost + tripAux.returnFlightCost)*Double(tripAux.numberOfTravelers)))
-                                    .font(.system(size: 10, weight: .heavy))
-                                    .foregroundStyle(Color("AccentColor"))
-                                
-                            } // -> if
-                            
-                        } // -> HStack
-                        
-                    } // -> VStack
-                    .padding(.vertical, 20)
-                    
-                    Line()
-                        .stroke(Color("defaultLightGray"), style: StrokeStyle(lineWidth: 1, dash: [5]))
-                        .frame(height: 1)
-                    
-                    // MARK: TOTAL
-                    HStack {
-                            
-                        Text("FLIGHTS")
-                            .font(.system(size: 20, weight: .heavy))
-                        
-                        GeometryReader { geo in
-                            
-                            let availableWidth = geo.size.width
-                                
-                            Text(String(repeating: ".", count: Int(availableWidth/4)))
-                                .font(.system(size: 15))
-                                .foregroundStyle(Color("defaultLightGray"))
-                                .frame(maxWidth: .infinity)
-                            
-                        } // -> GeometryReader
-                        .frame(height: 12)
-                        
-                        Text(String(format: "€%.2f", (tripAux.outboundFlightCost + tripAux.returnFlightCost)*Double(tripAux.numberOfTravelers)))
-                            .font(.system(size: 20, weight: .heavy))
-                            .foregroundStyle(Color("AccentColor"))
-                        
-                    } // -> HStack
-                    .padding(.vertical, 20)
-                    .padding(.bottom, 10)
-                    
-                } // -> VStack
-                .padding(.horizontal, 30)
-                .background(.white)
-                .clipShape(
-                    TicketMiddle(cutRadius: 20)
-                ) // -> clipShape
-                .offset(y: -20)
+                    } // -> ZStack
+                } // -> Button
+                .padding(.horizontal, 40)
+                .offset(y: modeCarousel ? -100 : -20)
                 
-                // MARK: BOTTOM
-                VStack {
-                    
-                    // MARK: RETURN
-                    if !trip.isRoundTrip {
-                        HStack {
-                            
-                            Text(tripAux.originCode)
-                                .font(.system(size: 20, weight: .heavy))
-                                .frame(width: 45, alignment: .leading)
-                            
-                            Spacer()
-                            
-                            Image("flight")
-                                .resizable()
-                                .scaledToFit()
-                                .padding()
-                            
-                            Spacer()
-                            
-                            Text(tripAux.destinyCode)
-                                .font(.system(size: 20, weight: .heavy))
-                                .frame(width: 45, alignment: .trailing)
-                            
-                        } // -> HStack
-                        .frame(height: 100)
-                        
-                        Line()
-                            .stroke(Color("defaultLightGray"), style: StrokeStyle(lineWidth: 1, dash: [5]))
-                            .frame(height: 1)
-                        
-                    } // -> if
-                    
-                    // MARK: TOTAL
-                    HStack {
-                            
-                        Text("FLIGHTS")
-                            .font(.system(size: 20, weight: .heavy))
-                        
-                        GeometryReader { geo in
-                            
-                            let availableWidth = geo.size.width
-                                
-                            Text(String(repeating: ".", count: Int(availableWidth/4)))
-                                .font(.system(size: 15))
-                                .foregroundStyle(Color("defaultLightGray"))
-                                .frame(maxWidth: .infinity)
-                            
-                        } // -> GeometryReader
-                        .frame(height: 12)
-                        
-                        Text(String(format: "€%.2f", totalTripCost(trip: tripAux)))
-                            .font(.system(size: 20, weight: .heavy))
-                            .foregroundStyle(Color("AccentColor"))
-                        
-                    } // -> HStack
-                    .padding(.vertical, 20)
-                    .padding(.bottom, 10)
-                    
-                } // -> VStack
-                .padding(.horizontal, 30)
-                .background(.white)
-                .clipShape(
-                    TicketBottom(cornerRadius: 20, cutRadius: 20)
-                ) // -> clipShape
-                .offset(y: -40)
-                
-            } // -> VStack
-            .padding(.horizontal, 20)
+            } // -> ScrollView
+            .scrollIndicators(.hidden)
             
         } // -> ZStack
         .onDisappear {

@@ -7,8 +7,8 @@
 
 import Foundation
 
-func searchCity(code: String) -> String {
-    sampleCities.first { $0.code == code }?.name ?? "???"
+func getCostCity(code: String) -> CityCost {
+    sampleCostCities.first { $0.city.code == code } ?? dummyCostCity
 }
 
 func isHoliday(date: Date) -> Bool {

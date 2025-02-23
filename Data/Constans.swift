@@ -31,6 +31,8 @@ let sampleCities: [City] = [
     City(name: "Rome", country: "Italy", code: "ROM")
 ]
 
+let dummyCostCity: CityCost = CityCost(city: dummyCity, transportCost: 0, mealCost: 0, hotelCost: 0)
+
 let sampleCostCities: [CityCost] = [
     CityCost(city: sampleCities[0], transportCost: 8, mealCost: 25, hotelCost: 100),
     CityCost(city: sampleCities[1], transportCost: 6, mealCost: 20, hotelCost: 90),
