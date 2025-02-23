@@ -8,7 +8,7 @@
 import Foundation
 
 struct FlightCost {
-    let fromCity: String
-    let toCity: String
-    let cost: Double // One-way flight cost per person (avg.)
+    let fromCityCode: String
+    let toCityCode: String
+    let cost: Double
 } // -> FlightCost

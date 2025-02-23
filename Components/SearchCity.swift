@@ -14,13 +14,13 @@ struct SearchCity: View {
     
     @FocusState private var isSearchFocused: Bool
     
-    @Binding var selectedCity: String
+    @Binding var selectedCity: City
     
-    @State private var cities: [City] = City.sampleCities
+    @State private var cities: [City] = sampleCities
     @State private var searchText = ""
     
     @State var placeholder: String = ""
-    @State var removeCity: String? = nil
+    @State var removeCity: City? = nil
     
     var filteredCities: [City] {
         guard !searchText.isEmpty else { return cities }
@@ -64,9 +64,9 @@ struct SearchCity: View {
                     .padding(.horizontal, 20)
                         
                     List(filteredCities, id: \.id) { city in
-                        if removeCity == nil || removeCity != city.name {
+                        if removeCity == nil || removeCity != city {
                             Button(action: {
-                                selectedCity = city.name
+                                selectedCity = city
                                 dismiss()
                             }) {
                                 HStack {

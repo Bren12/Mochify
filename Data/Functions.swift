@@ -36,13 +36,14 @@ func daysBetween(from: Date, to: Date) -> Int {
     return components.day ?? 0
 }
 
-func totalCostLiving(code: String, flight: Double, days: Int, travelers: Int) -> Double {
-    ((sampleCostCities.first { $0.city.code == code }?.totalCost(forDays: days) ?? 0) + flight) * Double(travelers)
+func totalCostLiving(code: String, days: Int, travelers: Int) -> Double {
+    (sampleCostCities.first { $0.city.code == code }?.totalCost(forDays: days) ?? 0) * Double(travelers)
 }// -> totalCostLiving
 
 func totalTripCost(trip: TripCostModel) -> Double {
     let totalflightCost = (trip.outboundFlightCost + trip.returnFlightCost) * Double(trip.numberOfTravelers)
-    let days = daysBetween(from: trip.startDate, to: trip.finalDate)
-    let totalCostLiving = totalCostLiving(code: trip.destinyCode, flight: totalflightCost, days: days, travelers: trip.numberOfTravelers)
+    let days = daysBetween(from: trip.startDate, to: trip.finalDate) + 1
+    let totalCostLiving = totalCostLiving(code: trip.destinyCode, days: days, travelers: trip.numberOfTravelers)
     return totalflightCost + totalCostLiving
+//    return totalflightCost + totalCostLiving
 }// -> totalTripCost

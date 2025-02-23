@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  Line.swift
 //  Mochify
 //
 //  Created by Brenda Elena Saucedo Gonzalez on 20/02/25.

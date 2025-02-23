@@ -1,5 +1,5 @@
 //
-//  DataModel.swift
+//  TripCostModel.swift
 //  Mochify
 //
 //  Created by Brenda Elena Saucedo Gonzalez on 22/02/25.
@@ -10,30 +10,31 @@ import SwiftData
 
 @Model
 class TripCostModel: Identifiable {
-    var cityCode: String
+    var id: String
+    var originCode: String
+    var destinyCode: String
+    var isRoundTrip: Bool
     var outboundFlightCost: Double
     var returnFlightCost: Double
-    var departureDate: Date
-    var returnDate: Date
+    var startDate: Date
+    var finalDate: Date
     var numberOfTravelers: Int
-    var originCity: String
-    var destinationCity: String
 
-    init(cityCode: String,
+    init(originCode: String,
+         destinyCode: String,
          outboundFlightCost: Double,
          returnFlightCost: Double,
-         departureDate: Date,
-         returnDate: Date,
-         numberOfTravelers: Int,
-         originCity: String,
-         destinationCity: String) {
-        self.cityCode = cityCode
+         startDate: Date,
+         finalDate: Date,
+         numberOfTravelers: Int) {
+        self.id = UUID().uuidString
+        self.originCode = originCode
+        self.destinyCode = destinyCode
+        self.isRoundTrip = returnFlightCost > 0 ? true : false
         self.outboundFlightCost = outboundFlightCost
         self.returnFlightCost = returnFlightCost
-        self.departureDate = departureDate
-        self.returnDate = returnDate
+        self.startDate = startDate
+        self.finalDate = finalDate
         self.numberOfTravelers = numberOfTravelers
-        self.originCity = originCity
-        self.destinationCity = destinationCity
-    }
-}
+    } // -> init
+} // -> TripCostModel

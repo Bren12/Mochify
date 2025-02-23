@@ -10,20 +10,13 @@ import Foundation
 struct CityCost: Identifiable {
     
     let id = UUID()
-    let name: String
-    let country: String
-    let code: String
+    let city: City
+    let transportCost: Double
+    let mealCost: Double
+    let hotelCost: Double
     
-    static let sampleCities: [City] = [
-        City(name: "Mexico City", country: "Mexico", code: "MEX"),
-        City(name: "Frankfurt", country: "Germany", code: "FRA"),
-        City(name: "Berlin", country: "Germany", code: "BER"),
-        City(name: "Madrid", country: "Spain", code: "MAD"),
-        City(name: "Rome", country: "Italy", code: "ROM"),
-        City(name: "New York", country: "USA", code: "NYC"),
-        City(name: "Tokyo", country: "Japan", code: "TYO"),
-        City(name: "Paris", country: "France", code: "PAR"),
-        City(name: "London", country: "UK", code: "LON")
-    ] // -> sampleCities
+    func totalCost(forDays days: Int) -> Double {
+        (transportCost * Double(days)) + (mealCost * Double(days)) + (hotelCost * Double(days > 1 ? days : 0))
+    } // -> totalCost
     
-} // -> City
+} // -> CityCost

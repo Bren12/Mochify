@@ -9,23 +9,25 @@ import SwiftUI
 
 struct TabBar: View {
     
-    @State private var selectedTab = 0
-    
-    @State var selectedCity = ""
+    @State private var selectedTab: Int = 0
+    @State private var navigateToDetail: Bool = false
+    @State private var tripPosted: TripCostModel = TripCostModel(originCode: "", destinyCode: "", outboundFlightCost: 0, returnFlightCost: 0, startDate: Date(), finalDate: Date(), numberOfTravelers: 0)
     
     var body: some View {
         
         TabView(selection: $selectedTab) {
             
-            SearchView()
+            SearchView(selectedTab: $selectedTab, navigateToDetail: $navigateToDetail, tripPosted: $tripPosted)
                 .tabItem {
                     Label("Search", systemImage: "magnifyingglass")
                 } // -> tabItem
+                .tag(0)
             
-            SearchCity(selectedCity: $selectedCity)
+            SummaryView(navigateToDetail: $navigateToDetail, selectedTab: $selectedTab, tripPosted: $tripPosted)
                 .tabItem {
                     Label("Trips", systemImage: "suitcase.fill")
                 } // -> tabItem
+                .tag(1)
             
         } // -> TabView
         

@@ -10,7 +10,7 @@ import AppleProductTypes
 let package = Package(
     name: "Mochify",
     platforms: [
-        .iOS("16.0")
+        .iOS("17.0")
     ],
     products: [
         .iOSApplication(
@@ -21,7 +21,7 @@ let package = Package(
             displayVersion: "1.0",
             bundleVersion: "1",
             appIcon: .placeholder(icon: .leaf),
-            accentColor: .presetColor(.blue),
+            accentColor: .asset("AccentColor"),
             supportedDeviceFamilies: [
                 .pad,
                 .phone
@@ -40,5 +40,5 @@ let package = Package(
             path: "."
         )
     ],
-    swiftLanguageVersions: [.v6]
+    swiftLanguageVersions: [.version("6")]
 )

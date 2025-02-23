@@ -1,10 +1,12 @@
 import SwiftUI
+import SwiftData
 
 @main
 struct MyApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            TabBar()
         }
+        .modelContainer(for: TripCostModel.self)
     }
 }
