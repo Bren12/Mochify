@@ -11,7 +11,6 @@ struct SearchView: View {
     @Environment(\.modelContext) private var context
     @Query private var trips: [TripCostModel]
     
-    @Binding var selectedTab: Int
     @Binding var navigateToDetail: Bool
     @Binding var tripPosted: TripCostModel
     
@@ -255,7 +254,7 @@ struct SearchView: View {
                                     .labelsHidden()
                                     .preferredColorScheme(.light)
                                     .onChange(of: startDate) { _ in
-                                        finalDate = startDate
+                                        finalDate = finalDate < startDate ? startDate : finalDate
                                     }
                                     
                                 } // -> VStack
@@ -363,7 +362,7 @@ struct SearchView: View {
             } // -> ZStack
             
             NavigationLink(
-                destination: DetailView(selectedTab: $selectedTab, navigateToDetail: $navigateToDetail, trip: tripPosted),
+                destination: DetailView(navigateToDetail: $navigateToDetail, trip: tripPosted),
                 isActive: $navigateToDetail,
                 label: { EmptyView() }
             ) // -> NavigationLink

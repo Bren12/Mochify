@@ -14,7 +14,6 @@ struct SummaryView: View {
     @Query private var trips: [TripCostModel]
     
     @Binding var navigateToDetail: Bool
-    @Binding var selectedTab: Int
     @Binding var tripPosted: TripCostModel
     
     @State var isUpcoming: String = "UPCOMING"
@@ -78,7 +77,7 @@ struct SummaryView: View {
                             ForEach(filteredTrips) { trip in
                                 
                                 NavigationLink(
-                                    destination: DetailView(selectedTab: $selectedTab, navigateToDetail: $navigateToDetail, trip: trip)
+                                    destination: DetailView(navigateToDetail: $navigateToDetail, trip: trip)
                                 ) {
                                     CardSummary(trip: trip)
                                         .padding(.bottom)
@@ -95,9 +94,6 @@ struct SummaryView: View {
             } // -> ZStack
             
         } // -> NavigationStack
-        .onAppear {
-            showDetail = navigateToDetail
-        }
         
     } // -> body
     

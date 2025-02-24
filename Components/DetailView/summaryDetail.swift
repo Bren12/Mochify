@@ -92,10 +92,11 @@ struct summaryDetail: View {
                     .frame(width: 100)
                 
                 VStack {
-                    Text("\(daysBetween(from: trip.startDate, to: trip.finalDate))")
+                    let days = daysBetween(from: trip.startDate, to: trip.finalDate)
+                    Text("\(days)")
                         .foregroundStyle(.black)
                         .font(.system(size: 17, weight: .heavy))
-                    Text("Days")
+                    Text("\(days == 1 ? "Day" : "Days")")
                         .foregroundStyle(.black)
                         .font(.system(size: 13))
                 } // -> VStack

@@ -13,7 +13,6 @@ struct DetailView: View {
     @Environment(\.modelContext) private var context
     @Query private var trips: [TripCostModel]
     
-    @Binding var selectedTab: Int
     @Binding var navigateToDetail: Bool
     
     @State private var expanded: Bool = false
@@ -111,6 +110,7 @@ struct DetailView: View {
                     
                 } // -> VStack
                 
+                // MARK: BUTTON CAROUSEL
                 Button {
                     modeCarousel.toggle()
                 } label: {
@@ -128,6 +128,7 @@ struct DetailView: View {
                 .padding(.horizontal, 33)
                 .offset(y: modeCarousel ? -100 : -20)
                 
+                // MARK: WARNING TEXT
                 VStack {
                     Text(warningText)
                         .font(.system(size: 15))
@@ -152,6 +153,7 @@ struct DetailView: View {
             .scrollIndicators(.hidden)
             
         } // -> ZStack
+        // MARK: DELET BUTTON
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button(action: {
@@ -164,13 +166,12 @@ struct DetailView: View {
             }
         }
         .onDisappear {
-            if selectedTab != 0 {
-                navigateToDetail = false
-            } // -> if
+            navigateToDetail = false
         } // -> onDisappear
         
     } // -> body
     
+    // MARK: DELETE FUNCTION
     func deleteTrip(trip: TripCostModel) {
         context.delete(trip)
         do {

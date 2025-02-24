@@ -17,13 +17,13 @@ struct TabBar: View {
         
         TabView(selection: $selectedTab) {
             
-            SearchView(selectedTab: $selectedTab, navigateToDetail: $navigateToDetail, tripPosted: $tripPosted)
+            SearchView(navigateToDetail: $navigateToDetail, tripPosted: $tripPosted)
                 .tabItem {
                     Label("Search", systemImage: "magnifyingglass")
                 } // -> tabItem
                 .tag(0)
             
-            SummaryView(navigateToDetail: $navigateToDetail, selectedTab: $selectedTab, tripPosted: $tripPosted)
+            SummaryView(navigateToDetail: $navigateToDetail, tripPosted: $tripPosted)
                 .tabItem {
                     Label("Trips", systemImage: "suitcase.fill")
                 } // -> tabItem
