@@ -383,7 +383,10 @@ struct SearchView: View {
     func addTrip() {
         let outboundCost: Double = adjustedFlightCost(from: origin.code, to: destiny.code, flightDate: startDate)
         let returnCost: Double = isRoundTrip ? adjustedFlightCost(from: destiny.code, to: origin.code, flightDate: finalDate) : 0
-        let newTrip = TripCostModel(originCode: origin.code, destinyCode: destiny.code, outboundFlightCost: outboundCost, returnFlightCost: returnCost, startDate: startDate, finalDate: finalDate, numberOfTravelers: Int(numberOfTravelers) ?? 1)
+        let calendar = Calendar.current
+        let tripStart = calendar.startOfDay(for: startDate)
+        let tripEnd = calendar.startOfDay(for: finalDate)
+        let newTrip = TripCostModel(originCode: origin.code, destinyCode: destiny.code, outboundFlightCost: outboundCost, returnFlightCost: returnCost, startDate: tripStart, finalDate: tripEnd, numberOfTravelers: Int(numberOfTravelers) ?? 1)
         context.insert(newTrip)
         do {
             try context.save()
