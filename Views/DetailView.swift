@@ -17,10 +17,9 @@ struct DetailView: View {
     @Binding var navigateToDetail: Bool
     
     @State var selectedDetail: Int = 0
+    @State var modeCarousel: Bool = false
     
     @State var trip: TripCostModel
-    
-    @State var modeCarousel: Bool = false
     
     var body: some View {
         
@@ -51,7 +50,9 @@ struct DetailView: View {
                                     .scaledToFit()
                                     .frame(width: 15)
                                     .foregroundStyle(Color("AccentColor"))
+                                    .opacity(selectedDetail > 0 ? 1 : 0.5)
                             } // -> Button
+                            .disabled(selectedDetail > 0 ? false : true)
                             
                             VStack {
                                 // MARK: MIDDLE
@@ -77,7 +78,9 @@ struct DetailView: View {
                                     .scaledToFit()
                                     .frame(width: 15)
                                     .foregroundStyle(Color("AccentColor"))
+                                    .opacity(selectedDetail < 3 ? 1 : 0.5)
                             } // -> Button
+                            .disabled(selectedDetail < 3 ? false : true)
                             
                         } // -> HStack
                         .padding(.horizontal, 10)

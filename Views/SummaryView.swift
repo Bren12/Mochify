@@ -20,7 +20,7 @@ struct SummaryView: View {
     @State var isUpcoming: String = "UPCOMING"
     @State var showDetail: Bool = false
     
-    let timeEvent: [String] = ["UPCOMING", "PAST EVENTS"]
+    let timeEvent: [String] = ["UPCOMING", "PAST TRIPS"]
     
     var filteredTrips: [TripCostModel] {
         let calendar = Calendar.current
@@ -53,23 +53,44 @@ struct SummaryView: View {
                     SegmentedPicker(items: timeEvent, selection: $isUpcoming)
                         .padding(.vertical)
                     
-                    ScrollView {
+                    if filteredTrips.isEmpty {
+                        Spacer()
+                        Image("backpackBg")
+                            .resizable()
+                            .scaledToFit()
+                            .foregroundStyle(Color("defaultGray"))
+                            .frame(width: 120, height: 120)
+                        if isUpcoming == timeEvent[0] {
+                            Text("Start planning a new trip!")
+                                .foregroundStyle(Color("defaultGray"))
+                                .font(.system(size: 20, weight: .heavy))
+                        } else {
+                            Text("There are no trips to show!")
+                                .foregroundStyle(Color("defaultGray"))
+                                .font(.system(size: 20, weight: .heavy))
+                        } // -> if-else
+                        Spacer()
+                        Spacer()
+                    } else {
                         
-                        ForEach(filteredTrips) { trip in
+                        ScrollView {
                             
-                            NavigationLink(
-                                destination: DetailView(selectedTab: $selectedTab, navigateToDetail: $navigateToDetail, trip: trip)
-                            ) {
-                                CardSummary(trip: trip)
-                                    .padding(.bottom)
-                            } // -> NavigationLink
+                            ForEach(filteredTrips) { trip in
+                                
+                                NavigationLink(
+                                    destination: DetailView(selectedTab: $selectedTab, navigateToDetail: $navigateToDetail, trip: trip)
+                                ) {
+                                    CardSummary(trip: trip)
+                                        .padding(.bottom)
+                                } // -> NavigationLink
+                                
+                            } // -> ForEach
                             
-                        } // -> ForEach
+                        } // -> ScrollView
                         
-                    } // -> ScrollView
+                    } // -> if-else
                     
                 } // -> VStack
-                
                 
             } // -> ZStack
             

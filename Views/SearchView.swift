@@ -47,11 +47,11 @@ struct SearchView: View {
                 VStack(spacing: 0) {
                     
                     // MARK: ICON
-                    Image("luggage")
+                    Image("backpack")
                         .resizable()
                         .scaledToFit()
                         .frame(width: 100, height: 85)
-                        .padding()
+                        .padding(.top)
                     
                     // MARK: TITLE
                     HStack {
