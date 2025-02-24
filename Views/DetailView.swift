@@ -16,6 +16,8 @@ struct DetailView: View {
     @Binding var selectedTab: Int
     @Binding var navigateToDetail: Bool
     
+    @State private var expanded: Bool = false
+    
     @State var selectedDetail: Int = 0
     @State var modeCarousel: Bool = false
     
@@ -125,6 +127,26 @@ struct DetailView: View {
                 } // -> Button
                 .padding(.horizontal, 33)
                 .offset(y: modeCarousel ? -100 : -20)
+                
+                VStack {
+                    Text(warningText)
+                        .font(.system(size: 15))
+                        .foregroundStyle(Color("defaultGray"))
+                        .lineLimit(expanded ? nil : 1)
+                    HStack{
+                        Spacer()
+                        Button(action: {
+                            expanded.toggle()
+                        }, label: {
+                            Text(expanded ? "...read less" : "...read more")
+                                .font(.system(size: 15))
+                                .foregroundStyle(Color("AccentColor"))
+                        }) // -> Button
+                    } // -> HStack
+                } // -> VStack
+                .padding(.horizontal, 33)
+                .padding(.bottom, modeCarousel ? -60 : 20)
+                .offset(y: modeCarousel ? -80 : 0)
                 
             } // -> ScrollView
             .scrollIndicators(.hidden)

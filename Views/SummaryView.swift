@@ -94,12 +94,6 @@ struct SummaryView: View {
                 
             } // -> ZStack
             
-            NavigationLink(
-                destination: DetailView(selectedTab: $selectedTab, navigateToDetail: $navigateToDetail, trip: tripPosted),
-                isActive: $showDetail,
-                label: { EmptyView() }
-            ) // -> NavigationLink
-            
         } // -> NavigationStack
         .onAppear {
             showDetail = navigateToDetail

@@ -169,3 +169,5 @@ let sampleFlights: [FlightCost] = [
     FlightCost(fromCityCode: "ROM", toCityCode: "BER", cost: 200),
     FlightCost(fromCityCode: "ROM", toCityCode: "MAD", cost: 180)
 ]
+
+let warningText: String = "⚠️ If your trip lasts only one day (e.g., May 28, 2025 - May 28, 2025), the accommodation cost will be $0, as there is no overnight stay. However, transportation, meals, and flights will still be included in the calculation, reflecting the cost for that day. Please review the breakdown carefully to ensure the estimate meets your expectations."

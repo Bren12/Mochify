@@ -254,6 +254,9 @@ struct SearchView: View {
                                     )
                                     .labelsHidden()
                                     .preferredColorScheme(.light)
+                                    .onChange(of: startDate) { _ in
+                                        finalDate = startDate
+                                    }
                                     
                                 } // -> VStack
                                 .frame(width: 120)
@@ -327,9 +330,10 @@ struct SearchView: View {
                             Button {
                                 if validateValues() {
                                     addTrip()
-                                    navigateToDetail = true
-                                    selectedTab = 1
-                                    resetValues()
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                        navigateToDetail = true
+                                        resetValues()
+                                    }
                                 }
                             } label: {
                                 
@@ -358,13 +362,23 @@ struct SearchView: View {
                 
             } // -> ZStack
             
+            NavigationLink(
+                destination: DetailView(selectedTab: $selectedTab, navigateToDetail: $navigateToDetail, trip: tripPosted),
+                isActive: $navigateToDetail,
+                label: { EmptyView() }
+            ) // -> NavigationLink
+            
         } // -> NavigationStack
         
     } // -> body
     
     func validateValues() -> Bool {
         guard let numTravelers = Int(numberOfTravelers) else { return false }
-        return origin != dummyCity && destiny != dummyCity && startDate >= Date() && finalDate >= startDate && Int(numTravelers) > 0
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+        let tripStart = calendar.startOfDay(for: startDate)
+        let tripEnd = calendar.startOfDay(for: finalDate)
+        return origin != dummyCity && destiny != dummyCity && tripStart >= today && tripEnd >= tripStart && Int(numTravelers) > 0
     } // -> validateValues
     
     func addTrip() {

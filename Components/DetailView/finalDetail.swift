@@ -136,11 +136,11 @@ struct finalDetail: View {
                         Text(trip.originCode)
                             .foregroundStyle(.black)
                             .font(.system(size: 20, weight: .heavy))
-                            .frame(width: 50)
+                            .frame(width: 60)
                         Text(getCity(code: trip.originCode))
                             .foregroundStyle(.black)
                             .font(.system(size: 10))
-                            .frame(width: 50, alignment: .center)
+                            .frame(width: 60, alignment: .center)
                     } // -> VStack
                     
                     Spacer()
@@ -156,11 +156,11 @@ struct finalDetail: View {
                         Text(trip.destinyCode)
                             .foregroundStyle(.black)
                             .font(.system(size: 20, weight: .heavy))
-                            .frame(width: 50)
+                            .frame(width: 60)
                         Text(getCity(code: trip.destinyCode))
                             .foregroundStyle(.black)
                             .font(.system(size: 10))
-                            .frame(width: 50, alignment: .center)
+                            .frame(width: 60, alignment: .center)
                     } // -> VStack
                     
                 } // -> HStack
